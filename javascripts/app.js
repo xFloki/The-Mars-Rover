@@ -1,13 +1,23 @@
 // Rover Object Goes Here
 // ======================
-var rover =
-{
-  direction: "N",
-  x: 0,
-  y: 0,
-  travelLog: []
-};
+
+function rovr(direction, x, y) {
+    this.direction = direction;
+    this.x = x;
+    this.y = y;
+    this.travelLog = [];
+
+}
+
+var rover = new rovr("N", 0, 0);
+var rover2 = new rovr("S", 0, 2);
+var rover3 = new rovr("E", 5, 3);
+
 // ======================
+
+// IMPORTANT -> New rovers can be created from the console, in order to work properly they must
+// be painted in the grid. Creating a rover on an obstacle or another rover won't give any error
+// or warning, NEEDS to be FIXED
 
 // IMPORTANT -> Dealing with the board Y and X will be inverted to match the coordinate based structure
 // of the Grid
@@ -15,21 +25,20 @@ var rover =
 // Obstacles => 'O'
 var board = [
   [' ','O','O',' ',' ',' ',' ',' ',' ',' '],
-  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+  [' ',' ',' ',' ',' ',' ',' ',' ','O',' '],
   [' ',' ',' ',' ',' ',' ','O',' ',' ',' '],
   ['O','O',' ',' ','O',' ',' ',' ',' ',' '],
   [' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
-  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+  [' ',' ',' ',' ',' ',' ',' ',' ','O',' '],
   [' ',' ',' ',' ','O',' ',' ',' ',' ',' '],
   [' ',' ','O',' ',' ',' ',' ',' ',' ',' '],
-  [' ',' ','O',' ',' ',' ',' ',' ',' ',' '],
+  [' ',' ','O',' ',' ',' ',' ','O',' ',' '],
   [' ',' ','O',' ',' ',' ',' ',' ',' ',' ']
 ];
 
-
-// Rober Added to the Grid to check collisions with other rovers
-board[rover.y][rover.x] = rover;
-
+paintRover(rover);
+paintRover(rover2);
+paintRover(rover3);
 
 function turnLeft(rover){
   console.log("turnLeft was called!");
@@ -82,9 +91,8 @@ function moveForward(rover){
           board[currentY][currentX] = ' ';
           board[currentY - 1 ][currentX] = rover;
           console.log("x = " + rover.x + " y = " + rover.y);
+          // Print board to check rover position
           console.log(board);
-        } else {
-          console.log("Obstaculo Encontrado");
         }
       break;
       case "S":
@@ -94,8 +102,6 @@ function moveForward(rover){
           board[currentY + 1][currentX] = rover;
           console.log("x = " + rover.x + " y = " + rover.y);
           console.log(board);
-        } else {
-          console.log("Obstaculo Encontrado");
         }
       break;
       case "E":
@@ -105,8 +111,6 @@ function moveForward(rover){
           board[currentY][currentX + 1] = rover;
           console.log("x = " + rover.x + " y = " + rover.y);
           console.log(board);
-        } else {
-          console.log("Obstaculo Encontrado");
         }
       break;
       case "W":
@@ -116,8 +120,6 @@ function moveForward(rover){
           board[currentY][currentX -1] = rover;
           console.log("x = " + rover.x + " y = " + rover.y);
           console.log(board);
-        } else {
-          console.log("Obstaculo Encontrado");
         }
       break;
     }
@@ -179,8 +181,26 @@ function checkPath(direction, x , y){
 // Check if there is an obstacle in the next position
 // return false if there is no obstacle
 function checkObstacle(y,x){
-  return board[y][x] === ' ' ? false : true ;
+  if (board[y][x] === ' ') {
+    return false;
+  } else {
+    if(board[y][x] === 'O'){
+      console.log("Obstacle found, impossible to move in that direction");
+      return true;
+    } else {
+      console.log("There is another rover on the way, impossible to move in that direction");
+      return true;
+    }
+  }
+
 }
+
+// Paint rover on Grid
+function paintRover(rover){
+  // Rober Added to the Grid to check collisions with other rovers
+  board[rover.y][rover.x] = rover;
+}
+
 
 
 console.log(board);
