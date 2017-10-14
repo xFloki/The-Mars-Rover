@@ -9,6 +9,27 @@ var rover =
 };
 // ======================
 
+// IMPORTANT -> Dealing with the board Y and X will be inverted to match the coordinate based structure
+// of the Grid
+// Rober Grid
+// Obstacles => 'O'
+var board = [
+  [' ','O','O',' ',' ',' ',' ',' ',' ',' '],
+  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+  [' ',' ',' ',' ',' ',' ','O',' ',' ',' '],
+  ['O','O',' ',' ','O',' ',' ',' ',' ',' '],
+  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' '],
+  [' ',' ',' ',' ','O',' ',' ',' ',' ',' '],
+  [' ',' ','O',' ',' ',' ',' ',' ',' ',' '],
+  [' ',' ','O',' ',' ',' ',' ',' ',' ',' '],
+  [' ',' ','O',' ',' ',' ',' ',' ',' ',' ']
+];
+
+
+// Rober Added to the Grid to check collisions with other rovers
+board[rover.y][rover.x] = rover;
+
 
 function turnLeft(rover){
   console.log("turnLeft was called!");
@@ -55,20 +76,49 @@ function moveForward(rover){
   if(checkPath(rover.direction, rover.x, rover.y)){
     switch (rover.direction) {
       case "N":
-        rover.y -= 1;
-        console.log("x = " + rover.x + " y = " + rover.y);
+        if(!checkObstacle(rover.y - 1, rover.x)){
+          rover.y -= 1;
+          // Update rover position on Board
+          board[currentY][currentX] = ' ';
+          board[currentY - 1 ][currentX] = rover;
+          console.log("x = " + rover.x + " y = " + rover.y);
+          console.log(board);
+        } else {
+          console.log("Obstaculo Encontrado");
+        }
       break;
       case "S":
-        rover.y += 1;
-        console.log("x = " + rover.x + " y = " + rover.y);
+        if(!checkObstacle(rover.y + 1, rover.x)){
+          rover.y += 1;
+          board[currentY][currentX] = ' ';
+          board[currentY + 1][currentX] = rover;
+          console.log("x = " + rover.x + " y = " + rover.y);
+          console.log(board);
+        } else {
+          console.log("Obstaculo Encontrado");
+        }
       break;
       case "E":
-        rover.x += 1;
-        console.log("x = " + rover.x + " y = " + rover.y);
+        if(!checkObstacle(rover.y, rover.x + 1)){
+          rover.x += 1;
+          board[currentY][currentX ] = ' ';
+          board[currentY][currentX + 1] = rover;
+          console.log("x = " + rover.x + " y = " + rover.y);
+          console.log(board);
+        } else {
+          console.log("Obstaculo Encontrado");
+        }
       break;
       case "W":
-        rover.x -= 1;
-        console.log("x = " + rover.x + " y = " + rover.y);
+        if(!checkObstacle(rover.y, rover.x - 1)){
+          rover.x -= 1;
+          board[currentY][currentX] = ' ';
+          board[currentY][currentX -1] = rover;
+          console.log("x = " + rover.x + " y = " + rover.y);
+          console.log(board);
+        } else {
+          console.log("Obstaculo Encontrado");
+        }
       break;
     }
     saveLocation(currentX, currentY);
@@ -126,4 +176,11 @@ function checkPath(direction, x , y){
   }
 }
 
-console.log(rover);
+// Check if there is an obstacle in the next position
+// return false if there is no obstacle
+function checkObstacle(y,x){
+  return board[y][x] === ' ' ? false : true ;
+}
+
+
+console.log(board);
