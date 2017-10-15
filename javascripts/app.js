@@ -1,7 +1,7 @@
 // Rover Object Goes Here
 // ======================
 
-function rovr(direction, x, y) {
+function Rover(direction, x, y) {
     this.direction = direction;
     this.x = x;
     this.y = y;
@@ -9,9 +9,9 @@ function rovr(direction, x, y) {
 
 }
 
-var rover = new rovr("N", 0, 0);
-var rover2 = new rovr("S", 0, 2);
-var rover3 = new rovr("E", 5, 3);
+var rover = new Rover("N", 0, 0);
+var rover2 = new Rover("S", 0, 2);
+var rover3 = new Rover("E", 5, 3);
 
 // ======================
 
@@ -47,13 +47,14 @@ function turnLeft(rover){
       rover.direction = "W";
     break;
     case "S":
-      this.rover.direction = "E";
+      rover.direction = "E";
+      console.log(rover);
     break;
     case "E":
-      this.rover.direction = "N";
+      rover.direction = "N";
     break;
     case "W":
-      this.rover.direction = "S";
+      rover.direction = "S";
     break;
   }
 }
